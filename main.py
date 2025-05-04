@@ -24,7 +24,7 @@ app.add_middleware(
 # Serve static files (optional)
 if os.path.exists("static"):
     # Mount static folder to serve frontend files (HTML, CSS, JS)
-    app.mount("/", StaticFiles(directory="static", html=True), name="static")
+    app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 else:
     @app.get("/")
     async def root():

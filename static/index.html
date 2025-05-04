@@ -177,8 +177,8 @@
         </div>
     </div>
 
-    <div class="about; text-align: center;" id="about">
-        <h2 style="margin-bottom: 1rem ; text-align: center;">About</h2>
+    <div class="about" id="about">
+        <h2 style="margin-bottom: 1rem; text-align: center;">About</h2>
         <p style="text-align: center;">
             EmotionVision is a real-time AI app that detects human emotion using deep learning and webcam input.
             <br>
@@ -222,7 +222,7 @@
                 const formData = new FormData();
                 formData.append("file", blob, "frame.jpg");
 
-                fetch("/predict", {
+                fetch("https://emotion-detection-g2r8.onrender.com/predict", {
                     method: "POST",
                     body: formData,
                 })
