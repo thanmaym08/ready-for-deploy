@@ -16,12 +16,12 @@ app = FastAPI()
 # CORS middleware (for frontend to communicate)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with specific origin in production
+    allow_origins=["*"],  # ⚠️ Replace "*" with your frontend domain in production
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ Optional static folder check
+# Serve static files (optional)
 if os.path.exists("static"):
     app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
@@ -33,7 +33,7 @@ else:
     async def root():
         return {"message": "Static folder not found. API is running."}
 
-# Model class
+# Emotion classifier model using EfficientNet
 class EmotionEfficientNet(nn.Module):
     def __init__(self, num_classes):
         super(EmotionEfficientNet, self).__init__()
@@ -44,7 +44,7 @@ class EmotionEfficientNet(nn.Module):
     def forward(self, x):
         return self.model(x)
 
-# Load model
+# Load the model
 num_classes = 7
 model = EmotionEfficientNet(num_classes)
 
@@ -68,13 +68,13 @@ transform = transforms.Compose([
                          [0.229, 0.224, 0.225])
 ])
 
-# Class labels
+# Emotion class labels
 class_labels = [
     "angry", "disgust", "fear", "happy",
     "neutral", "sad", "surprised"
 ]
 
-# API endpoint for prediction
+# Prediction endpoint
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     try:
@@ -95,7 +95,7 @@ async def predict(file: UploadFile = File(...)):
     except Exception as e:
         return {"error": f"Prediction failed: {str(e)}"}
 
-# Run the app
+# Run the app (host must be 0.0.0.0 for deployment like Render)
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))  # You can change default here
-    uvicorn.run("main:app", host="127.0.0.1", port=port, reload=True)
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
