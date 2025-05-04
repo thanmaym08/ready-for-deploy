@@ -6,8 +6,6 @@ __pycache__/
 .env
 venv/
 
-# Ignore model weights (if they're huge, and you don't want to push them)
-*.pth
 
 # Ignore IDE/editor configurations
 .vscode/
